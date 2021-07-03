@@ -16,4 +16,8 @@ public interface APIInterface {
 
     @DELETE("users/{id}")
     Call<Void> deleteUser(@Path("id") String id);
+
+    @FormUrlEncoded
+    @PATCH("users/2")
+    Call<UpdateUserBody> updateUserWithPatch(@Field("name") String name, @Field("job") String job);
 }

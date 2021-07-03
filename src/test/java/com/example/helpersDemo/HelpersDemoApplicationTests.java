@@ -45,8 +45,29 @@ class HelpersDemoApplicationTests implements WithAssertions {
 
 		response = client.updateUser(name,job).execute();
 
+		System.out.println(response.code()+ " ---- Code ");
+		System.out.println(response.body()+ " ---- Body ");
+
 		SoftAssertions.assertSoftly(softly -> {
 			softly.assertThat(response.isSuccessful()).isTrue();
+			softly.assertThat(response.body().getJob()).as("job").isEqualTo(job);
+			softly.assertThat(response.body().getName()).as("name").isEqualTo(name);
+		});
+	}
+
+	@Test
+	void updateUserWithPatchTest() throws IOException {
+		String name = "morpheus";
+		String job = "zion resident";
+
+		Response<UpdateUserBody> response;
+
+		APIInterface client = APIClientHelper.getClient().create(APIInterface.class);
+
+		response = client.updateUser(name,job).execute();
+
+		SoftAssertions.assertSoftly(softly -> {
+			softly.assertThat(response.code()).as("code").isEqualTo(201);
 			softly.assertThat(response.body().getJob()).as("job").isEqualTo(job);
 			softly.assertThat(response.body().getName()).as("name").isEqualTo(name);
 		});
